@@ -1,5 +1,5 @@
 import React from 'react';
-import Player from './Player';
+import Player from './Player/Player';
 
 function PlayerList(props) {
     let playerList = props.state.players.map(

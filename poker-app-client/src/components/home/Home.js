@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import './Home.less';
-import NewGameService from './services/new-game-service';
+import NewGameService from '@services/new-game-service';
 
 class Home extends Component {
 

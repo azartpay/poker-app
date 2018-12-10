@@ -1,5 +1,5 @@
 import React from 'react';
-import CardContainer from './CardContainer';
+import CardContainer from '@components/game/GameCard/CardContainer';
 
 import "./GameTable.css";
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import GameService from './services/game-service';
+import GameService from '@services/game-service';
 import PlayerList from './PlayerList';
-import PlayerForm from './PlayerForm';
+import PlayerForm from './PlayerForm/PlayerForm';
 
 class PlayerListContainer extends Component {
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Card from './Card';
-import CardService from './services/card-service';
+import CardService from '@services/card-service';
 
 class CardContainer extends Component {
 

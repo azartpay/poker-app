@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import GameService from './services/game-service';
-import PlayerListContainer from './PlayerListContainer';
-import CardDealerContainer from './CardDealerContainer';
-import GameTable from './GameTable'
+import GameService from '@services/game-service';
+import PlayerListContainer from './PlayerList/PlayerListContainer';
+import CardDealerContainer from './GameCardDealer/CardDealerContainer';
+import GameTable from './GameTable/GameTable'
 
 class GameContainer extends Component {
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import GameService from './services/game-service';
+import GameService from '@services/game-service';
 import CardDealer from './CardDealer';
 
 class CardDealerContainer extends Component {

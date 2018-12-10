@@ -1,4 +1,4 @@
-var deckOfCards = require('./deck-of-cards.json');
+var deckOfCards = require('../resources/deck-of-cards.json');
 
 function CardsService() {
 
@@ -23,4 +23,5 @@ function CardsService() {
     }
 };
 
-module.exports = new CardsService();
+const cardsService = new CardsService();
+export default cardsService;
