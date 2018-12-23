@@ -1,6 +1,5 @@
 cd poker-app-client
-echo "BUILD POKER-APP-CLIENT";
-npm build
+npm install
 ret = $?;
 cd ..
 exit $ret;

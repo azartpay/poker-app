@@ -1,6 +1,12 @@
+before_install:
+  - chmod +x install-server.sh
+  - chmod +x install-client.sh
 install: 
-  - cd poker-app-server && npm install && cd ..
-  - cd poker-app-client && npm install && cd ..
+  - ./install-server.sh
+  - ./install-client.sh
+before_script:
+  - chmod +x build-server.sh
+  - chmod +x build-client.sh
 script: 
   - ./build-server.sh
   - ./build-client.sh
