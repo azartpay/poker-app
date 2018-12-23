@@ -1,2 +1,6 @@
-install: cd poker-app-server && npm install
-script: npm build
+install: 
+  - cd poker-app-server && npm install && cd ..
+  - cd poker-app-client && npm install && cd ..
+script: 
+  - ./build-server.sh
+  - ./build-client.sh
