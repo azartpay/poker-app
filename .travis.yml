@@ -1,8 +1,2 @@
-jobs:
-  include:
-    - stage: Server
-    language: node_js
-    before_install: cd poker-app-server
-    after_script: cd ..
-    - stage: Client
-    before_install: cd poker-app-client
+install: cd poker-app-server && npm install
+script: npm build
