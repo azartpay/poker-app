@@ -1,6 +1,6 @@
 cd poker-app-client
 echo "BUILD POKER-APP-CLIENT";
-npm build
+npm run-script build
 ret = $?;
 cd ..
 exit $ret;
