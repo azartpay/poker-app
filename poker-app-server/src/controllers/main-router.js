@@ -1,6 +1,6 @@
 import cardDeckService from '../services/card-deck-service';
 import express from 'express';
-import gameService from '../services/game-service';
+import { gameService } from '../services/game-service';
 
 // ROUTES FOR OUR API
 // =============================================================================
