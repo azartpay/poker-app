@@ -97,14 +97,10 @@ router.put('/game/:gameId/turn', function(req, res) {
 
 router.put('/game/:gameId/river', function(req, res) {
     let gameId = req.params.gameId;
-    
-    if (games[gameId].nextStage != STAGES.RIVER) {
-        return res.status(409).send("Cannot do the river at this stage of the game!");
-    } else {
-        let river = games[gameId].deck.splice(0,1);
-        games[gameId].nextStage = STAGES.SHOWDOWN;
-        games[gameId].communityCards = games[gameId].communityCards.concat(river);
-        return res.json(mapGameStateToClientGameState(games[gameId]));
+    try {
+        return res.json(gameService.doRiver(gameId));
+    } catch (err) {
+        res.json(err.statusCode).send(err.message);
     }
 });
 

@@ -128,7 +128,12 @@ class GameService {
      * @throws {ServiceException} when the state of the game does not allow river or the game does not exist
      */
     doRiver(gameId = -1) {
-        return null;
+        let gameToUpdate = this.getGameInternal(gameId);
+        this.checkIfRiverAllowed(gameToUpdate);
+        let river = gameToUpdate.deck.splice(0, 1);
+        gameToUpdate.communityCards = gameToUpdate.communityCards.concat(river);
+        gameToUpdate.nextStage = STAGES.SHOWDOWN;
+        return this.mapGameStateToClientGameState(gameRepository.update(gameToUpdate));
     }
 
     checkIfAddingPlayersToGameAllowed(game) {
@@ -152,6 +157,11 @@ class GameService {
     checkIfTurnAllowed(game) {
         if (game.nextStage != STAGES.TURN)
             throw new ServiceException(409, 'Cannot do turn at this stage of the game!');
+    }
+
+    checkIfRiverAllowed(game) {
+        if (game.nextStage != STAGES.RIVER)
+            throw new ServiceException(409, 'Cannot do river at this stage of the game!');
     }
 
     notEnoughPlayersInTheGame(game = {players : []}) {

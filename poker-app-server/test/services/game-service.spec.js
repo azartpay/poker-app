@@ -212,7 +212,7 @@ describe('GameService Tests', function() {
         expect(err.message).to.exist;
     });
 
-    it('doTurn() should add fourth card to community cards and reduce the deck by one cards', function() {
+    it('doTurn() should add fourth card to community cards and reduce the deck by one card', function() {
         game.nextStage = GAME_STAGES.TURN;
         game.communityCards = [
             {
@@ -257,6 +257,73 @@ describe('GameService Tests', function() {
             }
         ]).to.deep.equal(updatedGame.communityCards);
         expect(GAME_STAGES.RIVER).to.equal(updatedGame.nextStage);
+
+        // Need to use internal method, as API method deletes the deck from the game state object
+        updatedGame = gameService.getGameInternal(CORRECT_ID);        
+        expect(0).to.equal(updatedGame.deck.length);     
+    });
+
+    it('doRiver() should throw exception when game not in river stage', function() {
+        game.nextStage = GAME_STAGES.SHOWDOWN;
+        let err = chai.assert.throw(() => gameService.doRiver(CORRECT_ID));
+        expect(err).to.be.instanceof(ServiceException);
+        expect(err).to.have.property('name', 'ServiceException');
+        expect(err.message).to.exist;
+    });
+
+    it('doRiver() should add fifth card to community cards and reduce the deck by one card', function() {
+        game.nextStage = GAME_STAGES.RIVER;
+        game.communityCards = [
+            {
+                "suit": "hearts",
+                "value": 2
+            },
+            {
+                "suit": "hearts",
+                "value": 3
+            },
+            {
+                "suit": "hearts",
+                "value": 4
+            },
+            {
+                "suit": "hearts",
+                "value": 5
+            }
+        ];
+        game.deck = [
+            {
+                "suit": "hearts",
+                "value": 6
+            }
+        ];
+
+        let updatedGame = gameService.doRiver(CORRECT_ID);
+        expect(updatedGame.communityCards).to.exist;
+        expect(updatedGame.deck).to.not.exist;
+        expect([
+            {
+                "suit": "hearts",
+                "value": 2
+            },
+            {
+                "suit": "hearts",
+                "value": 3
+            },
+            {
+                "suit": "hearts",
+                "value": 4
+            },
+            {
+                "suit": "hearts",
+                "value": 5
+            },
+            {
+                "suit": "hearts",
+                "value": 6
+            }
+        ]).to.deep.equal(updatedGame.communityCards);
+        expect(GAME_STAGES.SHOWDOWN).to.equal(updatedGame.nextStage);
 
         // Need to use internal method, as API method deletes the deck from the game state object
         updatedGame = gameService.getGameInternal(CORRECT_ID);        
