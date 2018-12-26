@@ -93,13 +93,42 @@ class GameService {
      */
     doFlop(gameId = -1) {
         let gameToUpdate = this.getGameInternal(gameId);
-        if (this.gameNotInFlopStage(gameToUpdate))
-            throw new ServiceException(409, 'Cannot do flop at this stage of the game!');
-        
+        this.checkIfFlopAllowed(gameToUpdate);
         let flop = gameToUpdate.deck.splice(0, 3);
         gameToUpdate.communityCards = gameToUpdate.communityCards.concat(flop);
         gameToUpdate.nextStage = STAGES.TURN;
         return this.mapGameStateToClientGameState(gameRepository.update(gameToUpdate));
+    }
+
+    /**
+     * Performs the turn stage in the game - takes one card from the deck
+     * and adds it to the game's community cards. Next stage is river.
+     * 
+     * @param {number} gameId id of the game
+     * @returns {Object} updated game state
+     * 
+     * @throws {ServiceException} when the state of the game does not allow turn or the game does not exist
+     */
+    doTurn(gameId = -1) {
+        let gameToUpdate = this.getGameInternal(gameId);
+        this.checkIfTurnAllowed(gameToUpdate);
+        let turn = gameToUpdate.deck.splice(0, 1);
+        gameToUpdate.communityCards = gameToUpdate.communityCards.concat(turn);
+        gameToUpdate.nextStage = STAGES.RIVER;
+        return this.mapGameStateToClientGameState(gameRepository.update(gameToUpdate));
+    }
+
+    /**
+     * Performs the river stage in the game - takes one card from the deck
+     * and adds it to the game's community cards. Next stage is showdown.
+     * 
+     * @param {number} gameId id of the game
+     * @returns {Object} updated game state
+     * 
+     * @throws {ServiceException} when the state of the game does not allow river or the game does not exist
+     */
+    doRiver(gameId = -1) {
+        return null;
     }
 
     checkIfAddingPlayersToGameAllowed(game) {
@@ -113,6 +142,16 @@ class GameService {
         
         if (this.gameNotInDealStage(game))
             throw new ServiceException(409, 'Cannot add new player at this stage of the game! Please wait for the round to end.');
+    }
+
+    checkIfFlopAllowed(game) {
+        if (game.nextStage != STAGES.FLOP)
+            throw new ServiceException(409, 'Cannot do flop at this stage of the game!');
+    }
+
+    checkIfTurnAllowed(game) {
+        if (game.nextStage != STAGES.TURN)
+            throw new ServiceException(409, 'Cannot do turn at this stage of the game!');
     }
 
     notEnoughPlayersInTheGame(game = {players : []}) {
@@ -141,10 +180,6 @@ class GameService {
 
     gameNotInDealStage(game) {
         return game.nextStage != STAGES.DEAL;
-    }
-
-    gameNotInFlopStage(game) {
-        return game.nextStage != STAGES.FLOP;
     }
 }
 

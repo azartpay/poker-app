@@ -80,16 +80,18 @@ router.put('/game/:gameId/flop', function(req, res) {
     }
 });
 
+/**
+ * Performs the turn stage in the game - takes one cards from the deck
+ * and adds it to the game's community cards
+ * 
+ * @returns updated game state object
+ */
 router.put('/game/:gameId/turn', function(req, res) {
     let gameId = req.params.gameId;
-    
-    if (games[gameId].nextStage != STAGES.TURN) {
-        return res.status(409).send("Cannot do the turn at this stage of the game!");
-    } else {
-        let turn = games[gameId].deck.splice(0,1);
-        games[gameId].nextStage = STAGES.RIVER;
-        games[gameId].communityCards = games[gameId].communityCards.concat(turn);
-        return res.json(mapGameStateToClientGameState(games[gameId]));
+    try {
+        return res.json(gameService.doTurn(gameId));
+    } catch (err) {
+        res.json(err.statusCode).send(err.message);
     }
 });
 
