@@ -28,6 +28,4 @@ class Home extends Component {
     }
 }
 
-//() => {} 
-
 export default withRouter(Home);
