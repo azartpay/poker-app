@@ -5,7 +5,7 @@
         "test": "./node_modules/.bin/mocha $(find test -name '*.spec.js') --compilers js:@babel/register",
         "build": "rimraf dist/ && babel src --out-dir ./dist --source-maps",
         "start": "nodemon --exec babel-node ./src/server.js",
-        "debug": "npm run build && node --nolazy --inspect dist/server.js",
+        "debug": "nodemon --exec babel-node --nolazy --inspect ./src/server.js",
         "serve": "npm run-script build && node ./dist/server.js"
     },
     "dependencies": {
