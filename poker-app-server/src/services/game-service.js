@@ -55,14 +55,68 @@ class GameService {
      * 
      * @throws {ServiceException} when the state of the game does not allow adding new players or the game does not exist
      */
-    addPlayerToGame(gameId, player = {name}) {
+    addPlayer(gameId, player = {name}) {
         const gameToUpdate = this.getGameInternal(gameId);
-        
-        if (this.isAddingPlayersToGameBlocked(gameToUpdate))
-            throw new ServiceException(409, `Cannot add new player at this stage of the game! Please wait for the round to end.`);
-        
+        this.checkIfAddingPlayersToGameAllowed(gameToUpdate);    
         gameToUpdate.players.push(this.setupPlayerForGame(gameToUpdate, player));
-        return this.gameRepository.update(gameToUpdate); 
+        return this.mapGameStateToClientGameState(this.gameRepository.update(gameToUpdate)); 
+    }
+    
+    /**
+     * Deals cards to all the players in the game with specified id
+     * 
+     * @param {number} gameId id of the game
+     * @returns {Object} updated game state
+     * 
+     * @throws {ServiceException} when the state of the game does not allow dealing cards or the game does not exist
+     */
+    dealCardsToPlayers(gameId = -1) {
+        let gameToUpdate = this.getGameInternal(gameId);
+        this.checkIfDealingCardsInGameAllowed(gameToUpdate);
+        
+        gameToUpdate.players.forEach(player => {
+            player.hand = gameToUpdate.deck.splice(0, 2);
+        });
+        gameToUpdate.nextStage = STAGES.FLOP;
+
+        return this.mapGameStateToClientGameState(gameRepository.update(gameToUpdate)); 
+    }
+
+    /**
+     * Performs the flop stage in the game - takes three cards from the deck
+     * and adds them to the game's community cards
+     * 
+     * @param {number} gameId id of the game
+     * @returns {Object} updated game state
+     * 
+     * @throws {ServiceException} when the state of the game does not allow flop or the game does not exist
+     */
+    doFlop(gameId = -1) {
+        let gameToUpdate = this.getGameInternal(gameId);
+        if (this.gameNotInFlopStage(gameToUpdate))
+            throw new ServiceException(409, 'Cannot do flop at this stage of the game!');
+        
+        let flop = gameToUpdate.deck.splice(0, 3);
+        gameToUpdate.communityCards = gameToUpdate.communityCards.concat(flop);
+        gameToUpdate.nextStage = STAGES.TURN;
+        return this.mapGameStateToClientGameState(gameRepository.update(gameToUpdate));
+    }
+
+    checkIfAddingPlayersToGameAllowed(game) {
+        if (this.gameNotInDealStage(game))
+            throw new ServiceException(409, 'Cannot add new player at this stage of the game! Please wait for the round to end.');
+    }
+
+    checkIfDealingCardsInGameAllowed(game) {
+        if (this.notEnoughPlayersInTheGame(game))
+            throw new ServiceException(409, 'There must be minimum 2 players in the game to deal the cards.');
+        
+        if (this.gameNotInDealStage(game))
+            throw new ServiceException(409, 'Cannot add new player at this stage of the game! Please wait for the round to end.');
+    }
+
+    notEnoughPlayersInTheGame(game = {players : []}) {
+        return game.players.length < 2;
     }
 
     mapGameStateToClientGameState(gameState) {
@@ -73,8 +127,7 @@ class GameService {
 
     getGameInternal(id) {
         try {
-            const game = this.gameRepository.get(id);
-            return this.mapGameStateToClientGameState(game);
+            return this.gameRepository.get(id);
         } catch (err) {
             throw new ServiceException(404, err.message, err);
         }
@@ -86,8 +139,12 @@ class GameService {
         return player;
     }
 
-    isAddingPlayersToGameBlocked(game) {
+    gameNotInDealStage(game) {
         return game.nextStage != STAGES.DEAL;
+    }
+
+    gameNotInFlopStage(game) {
+        return game.nextStage != STAGES.FLOP;
     }
 }
 

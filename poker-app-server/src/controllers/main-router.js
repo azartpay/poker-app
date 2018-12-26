@@ -2,17 +2,6 @@ import cardDeckService from '../services/card-deck-service';
 import express from 'express';
 import gameService from '../services/game-service';
 
-// TODO change to database
-let games = [];
-
-let STAGES = {
-    DEAL : 'deal',
-    FLOP : 'flop',
-    TURN : 'turn',
-    RIVER : 'river',
-    SHOWDOWN : 'showdown'
-}
-
 // ROUTES FOR OUR API
 // =============================================================================
 let router = express.Router();              // get an instance of the express Router
@@ -48,14 +37,14 @@ router.get('/game/:id', function(req, res) {
 
 /**
  * Adds player to the game with specified id
- * 
+ *
  * @returns updated game state object
  */
 router.put('/game/:id/addplayer', function(req, res) {
     const gameId = req.params.id;
     const player = { name : req.body.name };
     try {
-        gameService.addPlayerToGame(gameId, player);
+        gameService.addPlayer(gameId, player);
         return res.json(gameService.getGame(gameId));
     } catch (err) {
         return res.status(err.statusCode).send(err.message);
@@ -69,36 +58,25 @@ router.put('/game/:id/addplayer', function(req, res) {
  */
 router.put('/game/:id/dealcards', function(req, res) {
     let gameId = req.params.id;
-
-    console.log("Dealing cards for players in game " + gameId);
-
-    if (gameId < 0 || gameId >= games.length) {
-        return res.status(404).send("Cannot deal cards to players in the game with id " + gameId + ", beacuse the game does not exist!");
-    } else if (games[gameId].players.length == 0) {
-        return res.status(409).send("Cannot deal cards to players in the game with id " + gameId + ", beacuse there are no players!");
-    } else if (games[gameId].nextStage != STAGES.DEAL) {
-        return res.status(409).send("Cannot deal the cards at this stage of the game!");
+    try {
+        return res.json(gameService.dealCardsToPlayers(gameId));
+    } catch (err) {
+        return res.json(err.statusCode).send(err.message);
     }
-    // TODO implement max number of players
-    games[gameId].players.forEach(player => {
-        player.hand = games[gameId].deck.splice(0, 2);
-    });
-
-    games[gameId].nextStage = STAGES.FLOP;
-
-    return res.json(mapGameStateToClientGameState(games[gameId]));
 });
 
+/**
+ * Performs the flop stage in the game - takes three cards from the deck
+ * and adds them to the game's community cards
+ * 
+ * @returns updated game state object
+ */
 router.put('/game/:gameId/flop', function(req, res) {
     let gameId = req.params.gameId;
-    
-    if (games[gameId].nextStage != STAGES.FLOP) {
-        return res.status(409).send("Cannot do the flop at this stage of the game!");
-    } else {
-        let flop = games[gameId].deck.splice(0,3);
-        games[gameId].nextStage = STAGES.TURN;
-        games[gameId].communityCards = games[gameId].communityCards.concat(flop);
-        return res.json(mapGameStateToClientGameState(games[gameId]));
+    try {
+        return res.json(gameService.doFlop(gameId));
+    } catch (err) {
+        res.json(err.statusCode).send(err.message);
     }
 });
 

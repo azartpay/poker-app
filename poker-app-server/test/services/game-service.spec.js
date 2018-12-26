@@ -72,21 +72,132 @@ describe('GameService Tests', function() {
         expect(actualNewGame.deck).to.not.exist;
     });
 
-    it('addPlayerToGame() should add new player to game and return the updated game state', function() {
+    it('addPlayer() should add new player to game and return the updated game state', function() {
         let player = { name : "Test player" };
         const expectedPlayersArray = [ player ];
-        let updatedGame = gameService.addPlayerToGame(CORRECT_ID, player);
+        let updatedGame = gameService.addPlayer(CORRECT_ID, player);
         expect(updatedGame).to.exist
         expect(0).to.equal(updatedGame.id);
         expect(updatedGame.players).to.exist
         expect(expectedPlayersArray).to.deep.equal(updatedGame.players);
     });
 
-    it('addPlayerToGame() should throw exception when adding player to a game that does not exist', function() {
+    it('addPlayer() should throw exception when adding player to a game that does not exist', function() {
         let player = { name : "Test player" };
-        let err = chai.assert.throw(() => gameService.addPlayerToGame(INCORRECT_ID, player));
+        let err = chai.assert.throw(() => gameService.addPlayer(INCORRECT_ID, player));
         expect(err).to.be.instanceof(ServiceException);
         expect(err).to.have.property('name', 'ServiceException');
         expect(err).to.have.property('message', EXCEPTION_MESSAGE);
+    });
+
+    it('dealCardsToPlayers() should throw exception when game not in deal stage', function() {
+        game.nextStage = GAME_STAGES.FLOP;
+        let err = chai.assert.throw(() => gameService.dealCardsToPlayers(CORRECT_ID));
+        expect(err).to.be.instanceof(ServiceException);
+        expect(err).to.have.property('name', 'ServiceException');
+        expect(err.message).to.exist;
+    });
+
+    it('dealCardsToPlayers() should deal two cards to each of two players and reduce the deck size by four cards', function() {
+        game.deck = [
+            {
+              "suit": "hearts",
+              "value": 2
+            },
+            {
+              "suit": "hearts",
+              "value": 3
+            },
+            {
+              "suit": "hearts",
+              "value": 4
+            },
+            {
+              "suit": "hearts",
+              "value": 5
+            }
+        ];
+        game.players = [ { name : 'Player 1'}, { name: 'Player 2' } ];
+
+        let updatedGame = gameService.dealCardsToPlayers(CORRECT_ID);
+        let players = updatedGame.players;
+        expect(players).to.exist
+        expect(players[0].hand).to.exist
+        expect(players[1].hand).to.exist
+        expect(2).to.equal(players[0].hand.length);
+        expect(2).to.equal(players[1].hand.length);
+        expect([
+            {
+                "suit": "hearts",
+                "value": 2
+            },
+            {
+                "suit": "hearts",
+                "value": 3
+            }
+        ]).to.deep.equal(players[0].hand);
+        expect([
+            {
+                "suit": "hearts",
+                "value": 4
+            },
+            {
+                "suit": "hearts",
+                "value": 5
+            }
+        ]).to.deep.equal(players[1].hand);
+        expect(GAME_STAGES.FLOP).to.equal(updatedGame.nextStage);
+
+        // Need to use internal method, as API method deletes the deck from the game state object
+        updatedGame = gameService.getGameInternal(CORRECT_ID);        
+        expect(0).to.equal(updatedGame.deck.length);      
+    });
+
+    it('doFlop() should throw exception when game not in flop stage', function() {
+        game.nextStage = GAME_STAGES.TURN;
+        let err = chai.assert.throw(() => gameService.doFlop(CORRECT_ID));
+        expect(err).to.be.instanceof(ServiceException);
+        expect(err).to.have.property('name', 'ServiceException');
+        expect(err.message).to.exist;
+    });
+
+    it('doFlop() should add three cards to community cards and reduce the deck by three cards', function() {
+        game.nextStage = GAME_STAGES.FLOP;
+        game.deck = [
+            {
+              "suit": "hearts",
+              "value": 2
+            },
+            {
+              "suit": "hearts",
+              "value": 3
+            },
+            {
+              "suit": "hearts",
+              "value": 4
+            }
+        ];
+
+        let updatedGame = gameService.doFlop(CORRECT_ID);
+        expect(updatedGame.communityCards).to.exist;
+        expect([
+            {
+              "suit": "hearts",
+              "value": 2
+            },
+            {
+              "suit": "hearts",
+              "value": 3
+            },
+            {
+              "suit": "hearts",
+              "value": 4
+            }
+        ]).to.deep.equal(updatedGame.communityCards);
+        expect(GAME_STAGES.TURN).to.equal(updatedGame.nextStage);
+
+        // Need to use internal method, as API method deletes the deck from the game state object
+        updatedGame = gameService.getGameInternal(CORRECT_ID);        
+        expect(0).to.equal(updatedGame.deck.length);     
     });
 });
