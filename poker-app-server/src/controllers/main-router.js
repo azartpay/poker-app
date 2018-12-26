@@ -1,5 +1,6 @@
 import cardDeckService from '../services/card-deck-service';
 import express from 'express';
+import gameService from '../services/game-service';
 
 // TODO change to database
 let games = [];
@@ -21,59 +22,53 @@ router.get('/', function(req, res) {
     return res.json(cardDeckService.getShuffledDeckOfCards());   
 });
 
+/**
+ * Creates new game.
+ * 
+ * @returns game state object of the newly created game
+ */
 router.post('/newgame', function(req, res) {
-    let newGame = {
-        id : games.length,
-        deck : cardDeckService.getShuffledDeckOfCards(),
-        players : [],
-        nextStage : STAGES.DEAL,
-        communityCards : []
-    }
-    console.log("Creating new game with id " + newGame.id);
-    games.push(newGame);
-    
+    let newGame = gameService.createNewGame();
     return res.status(201).json(newGame.id);
 });
 
-var mapGameStateToClientGameState = function(gameState) {
-    let clientGameState = Object.assign({}, gameState);
-    delete clientGameState.deck;
-
-    return clientGameState;
-}
-
-router.get('/game/:gameId', function(req, res) {
-    let gameId = req.params.gameId;
-    console.log("Game with id " + gameId + " requested");
-   
-    if (gameId < 0 || gameId >= games.length) {
-        return res.status(404).send("Game with id " + gameId + " does not exist!");
+/**
+ * Gets the game with specified id
+ * 
+ * @returns game state object of requested game
+ */
+router.get('/game/:id', function(req, res) {
+    const id = req.params.id;
+    try {
+        return res.json(gameService.getGame(id));
+    } catch (err) {
+        return res.status(err.statusCode).send(err.message);
     }
-
-    return res.json(mapGameStateToClientGameState(games[gameId]));
 });
 
-router.put('/game/:gameId/addplayer', function(req, res) {
-    let gameId = req.params.gameId;
-
-    if (gameId == undefined || gameId == null || gameId < 0 || gameId >= games.length) {
-        return res.status(404).send("Cannot add new player to the game with id " + gameId + ", beacuse the game does not exist!");
-    } else if (games[gameId].nextStage != STAGES.DEAL) {
-        return res.status(409).send("Cannot add new player at this stage of the game! Please wait forthe round to end.");
+/**
+ * Adds player to the game with specified id
+ * 
+ * @returns updated game state object
+ */
+router.put('/game/:id/addplayer', function(req, res) {
+    const gameId = req.params.id;
+    const player = { name : req.body.name };
+    try {
+        gameService.addPlayerToGame(gameId, player);
+        return res.json(gameService.getGame(gameId));
+    } catch (err) {
+        return res.status(err.statusCode).send(err.message);
     }
-    
-    let newPlayerId = gameId.toString() + games[gameId].players.length;
-    games[gameId].players.push({
-        id : newPlayerId,
-        name : req.body.name,
-        hand : []
-    });
-    console.log(`created new Player with id ${newPlayerId}`);
-    return res.json(mapGameStateToClientGameState(games[gameId]));
 });
 
-router.put('/game/:gameId/dealcards', function(req, res) {
-    let gameId = req.params.gameId;
+/**
+ * Deals cards to all the players in the game with specified id
+ * 
+ * @returns updated game state object
+ */
+router.put('/game/:id/dealcards', function(req, res) {
+    let gameId = req.params.id;
 
     console.log("Dealing cards for players in game " + gameId);
 
