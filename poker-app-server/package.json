@@ -3,6 +3,7 @@
     "main": "server.js",
     "scripts": {
         "test": "./node_modules/.bin/mocha $(find test -name '*.spec.js') --compilers js:@babel/register",
+        "debug-tests": "./node_modules/.bin/mocha $(find test -name '*.spec.js') --no-timeouts --colors --inspect-brk --compilers js:@babel/register",
         "build": "rimraf dist/ && babel src --out-dir ./dist --source-maps",
         "start": "nodemon --exec babel-node ./src/server.js",
         "debug": "nodemon --exec babel-node --nolazy --inspect ./src/server.js",

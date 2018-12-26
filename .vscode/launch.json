@@ -4,12 +4,24 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch via NPM",
+            "name": "Server debug",
             "runtimeExecutable": "npm",
             "cwd": "${workspaceFolder}/poker-app-server",
             "runtimeArgs": [
                 "run-script",
                 "debug"
+            ],
+            "port": 9229
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Server debug tests",
+            "runtimeExecutable": "npm",
+            "cwd": "${workspaceFolder}/poker-app-server",
+            "runtimeArgs": [
+                "run-script",
+                "debug-tests"
             ],
             "port": 9229
         }
