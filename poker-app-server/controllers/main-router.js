@@ -1,4 +1,5 @@
 import cardDeckService from '../services/card-deck-service';
+import express from 'express';
 
 // TODO change to database
 let games = [];
@@ -13,7 +14,6 @@ let STAGES = {
 
 // ROUTES FOR OUR API
 // =============================================================================
-let express = require('express');
 let router = express.Router();              // get an instance of the express Router
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)

@@ -4,12 +4,13 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "build": "rimraf dist/ && babel ./ --out-dir dist/ --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log --copy-files",
-        "start": "npm run build && node dist/server.js"
-      },
+        "start": "npm run build && node dist/server.js",
+        "debug": "npm run build && node --nolazy --inspect dist/server.js"
+    },
     "dependencies": {
+        "body-parser": "~1.0.1",
         "express": "~4.0.0",
-        "mongoose": "~3.6.13",
-        "body-parser": "~1.0.1"
+        "mongoose": "~3.6.13"
     },
     "devDependencies": {
         "babel-cli": "^6.26.0",

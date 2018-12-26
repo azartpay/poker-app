@@ -1,15 +1,15 @@
-var deckOfCards = require('../resources/deck-of-cards.json');
+import deck from  '../resources/deck-of-cards';
 
 function CardsService() {
 
     var readDeckOfCards = function() {
-        return deckOfCards.slice();
+        return Object.assign(deck);
     };
 
-    var shuffleDeckOfCards = function(deckOfCards) {
-        var ids = Array.from(Array(deckOfCards.length).keys());
+    var shuffleDeckOfCards = function(deck) {
+        var ids = Array.from(Array(deck.cards.length).keys());
     
-        return deckOfCards.map(card => {
+        return deck.cards.map(card => {
             var id = ids.splice(Math.floor(Math.random() * ids.length), 1);
             return {'id' : id, 'card' : card};
         }).sort((cardA, cardB) => {
