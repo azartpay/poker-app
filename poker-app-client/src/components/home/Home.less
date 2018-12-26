@@ -2,43 +2,50 @@
 
 .home {
     display: flex;
-    flex-direction: column;
-    align-content: center;
-    justify-content: center;
-    height: 100%;
+    flex-direction: row;
+    justify-content: flex-end;
+    min-height: 100%;
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
 
-    .background-bar {
-      align-self: center;
+    .columnLeft {
+      flex: 1 1 60%;
+      min-height: 100%;
+      z-index: 1;
       display: flex;
       flex-direction: column;
-      align-content: center;
+      align-items: center;
       justify-content: center;
-      min-width: 100%;
-      min-height: 35%;
+      padding-left: 10%;
+      padding-right: 32px;
+    }
+    .columnRight {
+      flex: 1 1 40%;
+      margin-right: 10%;
 
-      .flat-button-large {
-        margin: 8px 24px 8px 24px;
-        padding: 0;
-        border: none;
-        font-size: 64px;
-        font-stretch: extra-expanded;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        text-transform: uppercase;
-        align-self: center;
-        outline: none;
-        font-weight: 800;
-        background-color: inherit;
-        color: @font-primary;
-    
-        &:hover {
-          font-weight: 900;
-          cursor: pointer;
-        }
+      img {
+        position: relative;
+        top: 25%;
+        right: 0;
+        float: right;
+        max-width: 100%; 
+        max-height: 50%; 
       }
+    }
+
+    .background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: @devil-blue;
+      min-width: 100%;
+      min-height: 100%;
+
+      /* polygon */
+      -webkit-clip-path: polygon(100% 0, 100% 21%, 50% 100%, 0 100%, 0 0);
+      clip-path: polygon(100% 0, 100% 21%, 50% 100%, 0 100%, 0 0);
     }
   }
