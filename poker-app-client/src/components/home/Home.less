@@ -1,8 +1,6 @@
 @import '../../theme.less';
 
 .home {
-    display: flex;
-    flex-direction: row;
     justify-content: flex-end;
     min-height: 100%;
     position: absolute;
@@ -15,12 +13,32 @@
       flex: 1 1 60%;
       min-height: 100%;
       z-index: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      align-items: flex-start;
+      justify-content: flex-start;
       padding-left: 10%;
       padding-right: 32px;
+
+      & > div {
+        position: relative; 
+        top: 25%;
+        align-items: flex-start;
+        justify-content: flex-start;
+
+        .pokerAppHeader {
+          align-items: center;
+          justify-content: center;
+  
+          h1 {
+            margin-left: @spacing-regular;
+            margin-bottom: 0;
+            margin-top: 0;
+          }
+        }
+  
+        .homeScreenButtons {
+          
+        }
+      }
     }
     .columnRight {
       flex: 1 1 40%;
@@ -40,7 +58,7 @@
       position: absolute;
       top: 0;
       left: 0;
-      background-color: @devil-blue;
+      background-color: @charleston-green;
       min-width: 100%;
       min-height: 100%;
 

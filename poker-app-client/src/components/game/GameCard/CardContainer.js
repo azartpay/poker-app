@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import Card from './Card';
-import CardService from '@services/card-service';
+import { resolveCardImage } from '@services/card-image-resolver';
 
 class CardContainer extends Component {
 
     constructor(props) {
         super(props);
-        this.cardService = new CardService();
-        this.imageSrc = this.cardService.getCardImage(this.props.suit, this.props.value);
+        this.imageSrc = resolveCardImage(this.props.suit, this.props.value);
     }
 
     render() {
