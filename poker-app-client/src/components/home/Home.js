@@ -28,8 +28,8 @@ class Home extends Component {
             <div className="columnLeft flex-container-column">
                 <div className="flex-container-column">
                     <div className="flex-container-row pokerAppHeader">
-                        <img className="icon" alt="Logo icon" src={this.logoIcon}></img>
-                        <h1>Poker App</h1>
+                        <img id="logo-icon" className="icon" alt="Logo icon" src={this.logoIcon}></img>
+                        <h1>The poker app</h1>
                     </div>
                     <p className="primary-text-large">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris eu nisl urna. Praesent aliquet ultrices nulla, eget gravida diam ultricies id. Praesent a sollicitudin sapien. Sed ut scelerisque augue. Proin sollicitudin, odio quis egestas varius, sem enim laoreet arcu, ac volutpat nisl magna nec lorem.</p>
                     <div className="homeScreenButtons flex-container-column">
