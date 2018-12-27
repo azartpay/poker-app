@@ -33,8 +33,8 @@ class Home extends Component {
                     </div>
                     <p className="primary-text-large">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris eu nisl urna. Praesent aliquet ultrices nulla, eget gravida diam ultricies id. Praesent a sollicitudin sapien. Sed ut scelerisque augue. Proin sollicitudin, odio quis egestas varius, sem enim laoreet arcu, ac volutpat nisl magna nec lorem.</p>
                     <div className="homeScreenButtons flex-container-column">
-                        <a href="#" className="anchor-button success" title="Create new game">Create new game</a>
-                        <a href="#" className="anchor-button" title="Join existing game">Join existing game</a>
+                        <a href="/create-game" className="anchor-button success" title="Create new game">Create new game</a>
+                        <a href="/join-game" className="anchor-button" title="Join existing game">Join existing game</a>
                     </div>
                 </div>
             </div>
