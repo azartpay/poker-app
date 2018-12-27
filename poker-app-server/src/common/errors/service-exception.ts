@@ -1,5 +1,5 @@
 class ServiceException extends Error {
-    constructor(statusCode, message, cause) {
+    constructor(private statusCode: number, public message: string, private cause?: any) {
         super(message);
         this.statusCode = statusCode;
         this.cause = cause;

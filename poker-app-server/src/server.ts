@@ -1,16 +1,16 @@
 import router from './controllers/main-router';
+import { NextFunction, Response, Request } from 'express';
 
-let express    = require('express');
-let app        = express();              
-let bodyParser = require('body-parser');
+import express from 'express';
+import bodyParser from 'body-parser';
 
-
+let app        = express();
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(function(req, res, next) {
+app.use((req: Request, res: Response, next: NextFunction) => {
     // TODO allow requests just from client or provide OPTIONS requests
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");

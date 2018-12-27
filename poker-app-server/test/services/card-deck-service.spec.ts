@@ -1,5 +1,9 @@
-const deck = {
-  "cards": [
+import chai from 'chai';
+import cardDeckService from '../../src/services/card-deck-service';
+
+const EXPECTED_DECK_LENGTH = 52;
+const expect = chai.expect; // we are using the "expect" style of Chai
+const expectedDeck = [
     {
       "suit": "hearts",
       "value": 2
@@ -208,7 +212,20 @@ const deck = {
       "suit": "spades",
       "value": "A"
     }
-  ]
-}
+  ];
 
-export default deck;
+describe('CardDeckService Tests', function() {
+  it('getDeckOfCards() should return an expected deck of cards', function() {
+    const actualDeck = cardDeckService.readDeckOfCards();
+    expect(actualDeck).to.exist;
+    expect(expectedDeck).to.deep.equal(actualDeck);
+  });
+
+  it('getShuffledDeckOfCards() should return a shuffled deck of cards', function() {
+    const actualDeck = cardDeckService.getShuffledDeckOfCards();
+    expect(actualDeck).to.exist;
+    expect(expectedDeck).not.to.deep.equal(actualDeck);
+    expect(EXPECTED_DECK_LENGTH).to.equal(actualDeck.length);
+    expect(expectedDeck).to.have.deep.members(actualDeck);
+  });
+});
