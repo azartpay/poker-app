@@ -1,79 +1,80 @@
 @import '../../theme.less';
 
 .home {
-    justify-content: flex-end;
-    min-height: 100%;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
+  justify-content: flex-end;
+  min-height: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 
-    .columnLeft {
-      flex: 1 1 60%;
-      min-height: 100%;
-      z-index: 1;
+
+  .column-left {
+    flex: 1 1 60%;
+    min-height: 100%;
+    z-index: 1;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding-left: 10%;
+    padding-right: 32px;
+
+    .column-left-content {
+      position: relative; 
+      top: 25%;
       align-items: flex-start;
       justify-content: flex-start;
-      padding-left: 10%;
-      padding-right: 32px;
 
-      & > div {
-        position: relative; 
-        top: 25%;
-        align-items: flex-start;
-        justify-content: flex-start;
+      .column-left-content-header {
+        align-items: center;
+        justify-content: center;
 
-        .pokerAppHeader {
-          align-items: center;
-          justify-content: center;
-
-          img#logo-icon {
-            -webkit-animation:spin 4s linear infinite;
-            -moz-animation:spin 4s linear infinite;
-            animation:spin 4s linear infinite;
-            @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
-            @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
-            @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
-          }
-          
-  
-          h1 {
-            margin-left: @spacing-regular;
-            margin-bottom: 0;
-            margin-top: 0;
-          }
+        .column-left-content-header__icon {
+          -webkit-animation:spin 4s linear infinite;
+          -moz-animation:spin 4s linear infinite;
+          animation:spin 4s linear infinite;
+          @-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+          @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+          @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
         }
-  
-        .homeScreenButtons {
-          align-self: center;
+        
+        .column-left-content-header__text {
+          margin-left: @spacing-regular;
+          margin-bottom: 0;
+          margin-top: 0;
         }
       }
-    }
-    .columnRight {
-      flex: 1 1 40%;
-      margin-right: 10%;
 
-      img {
-        position: relative;
-        top: 25%;
-        right: 0;
-        float: right;
-        max-width: 100%; 
-        max-height: 50%; 
+      .column-left-content__buttons-container {
+        align-self: center;
       }
-    }
-
-    .background {
-      position: absolute;
-      top: 0;
-      left: 0;
-      background-color: @charleston-green;
-      min-width: 100%;
-      min-height: 100%;
-
-      /* polygon */
-      -webkit-clip-path: polygon(100% 0, 100% 21%, 50% 100%, 0 100%, 0 0);
-      clip-path: polygon(100% 0, 100% 21%, 50% 100%, 0 100%, 0 0);
     }
   }
+
+  .column-right {
+    flex: 1 1 40%;
+    margin-right: 10%;
+
+    .column-right__card-image {
+      position: relative;
+      top: 25%;
+      right: 0;
+      float: right;
+      max-width: 100%; 
+      max-height: 50%; 
+    }
+  }
+
+  .home__background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: @charleston-green;
+    min-width: 100%;
+    min-height: 100%;
+
+    /* polygon */
+    -webkit-clip-path: polygon(100% 0, 100% 21%, 50% 100%, 0 100%, 0 0);
+    clip-path: polygon(100% 0, 100% 21%, 50% 100%, 0 100%, 0 0);
+  }
+}

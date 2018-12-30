@@ -4,7 +4,7 @@ import './Card.less';
 function Card(props) {
     return(
         <div className="card">
-            <img alt={props.imgSrc} src={props.imgSrc}/>
+            <img  className="card__image" alt={props.imgSrc} src={props.imgSrc}/>
         </div>
     );
 }

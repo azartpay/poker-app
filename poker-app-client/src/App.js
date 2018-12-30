@@ -11,7 +11,7 @@ class App extends Component {
   render() {
     return (
         <Router>
-          <div className="flex-container-row">
+          <div className="container container--flex-row">
             <Route exact path="/" component={Home}/>
             <Route path="/game/:id" component={GameContainer}/>
             <Route path="/create-game" component={CreateGameContainer}/>
