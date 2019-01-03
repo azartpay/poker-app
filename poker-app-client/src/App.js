@@ -4,7 +4,7 @@ import Home from './components/home/Home';
 import GameContainer from './components/game/GameContainer';
 import CreateGameContainer from './components/create-game/CreateGameContainer';
 import JoinGameContainer from './components/join-game/JoinGameContainer';
-import './index.less';
+import './styles/index.less';
 
 class App extends Component {
 

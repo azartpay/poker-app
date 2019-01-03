@@ -1,0 +1,36 @@
+.anchor-button {
+    display: block;  
+    border-radius: 999px;
+    color: @font-color-header;
+    font-weight: @font-weight-regular;
+    font-size: @font-size-large;
+    padding: @spacing-regular @spacing-large @spacing-regular @spacing-large;
+    margin: @spacing-small;
+    text-decoration: none;
+    text-align: center;
+    border: 1px solid;
+
+    &::after {
+      display: block;
+      content: attr(title);
+      font-weight: @font-weight-bold;
+      height: 0;
+      overflow: hidden;
+      visibility: hidden;
+    }
+
+    &:focus, &:hover {
+      font-weight: @font-weight-bold;
+      cursor: pointer;
+    }
+
+    .anchor-button--success, &.anchor-button--success {
+      background-color: @verdigris-primary;
+      border: none;
+    }
+  
+    .anchor-button--danger, &.anchor-button--danger {
+      background-color: @light-carmine-pink-primary;
+      border: none;
+    }
+}
