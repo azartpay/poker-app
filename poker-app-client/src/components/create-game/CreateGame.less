@@ -1,0 +1,80 @@
+@import '../../styles/theme.less';
+
+.create-game {
+  height: 100vh;
+  width: 100vw;
+  background-color: @charleston-green;
+}
+
+.create-game__title {
+  color: @white;
+  margin: 0rem;
+  padding: 0rem;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.create-game__title__text {
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
+.create-game__title__icon {
+  margin-left: 1rem;
+  margin-right: 1rem;
+  height: 3rem;
+  width: auto;
+}
+
+.create-game__form {
+  width: 25%;
+  padding: 1.5rem;
+  margin-top: 1rem;
+}
+
+.create-game__form__input {
+  display: block;
+  width: 100%;
+  height: 2.5rem;
+  border-radius: .5rem;
+  border: none;
+  padding: .5rem;
+
+  &:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+}
+
+.create-game__buttons {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.create-game__button() {
+  cursor: pointer;
+  background: none;
+  color: @white;
+  padding: 1rem 2.8rem;
+  border-radius: 5rem;
+  outline: none;
+  font-size: 1.3rem;
+  border: .1rem solid @white;
+}
+
+.create-game__button--cancel {
+  .create-game__button;
+}
+
+.create-game__button--create {
+  .create-game__button;
+  background-color: @puerto-rico;
+  border: none;
+
+
+  &:hover {
+    background-color: orangered;
+  }
+}
